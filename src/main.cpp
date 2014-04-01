@@ -39,17 +39,15 @@ void initGLEW() {
 
 void init() {
 	g_stateManager = new StateManager();
-	g_stateManager->loadNewCurrentState(new SplashScreenState());
+	g_stateManager->loadNewCurrentState(new SplashScreenState("./img/image2.bmp", 8000, 3000, 2000));
 	
 	g_quit = false;
-	
-	loadShaders();
 }
 
 void cleanup() {
-	SDL_Quit();
 	SDL_DestroyWindow(g_mainWindow);
 	SDL_GL_DeleteContext(g_mainContext);
+	SDL_Quit();
 }
 
 // Render objects onto SDL screen
@@ -65,7 +63,12 @@ void render() {
 void mainLoop() {
 	SDL_Event e;
 	
+	GameTimer* timer = new GameTimer();
+	timer->start();
+	
 	while(!g_quit) {
+		timer->restart();
+		
 		while(SDL_PollEvent(&e))
 			g_stateManager->getCurrentState()->handleEvent(e);
 		
@@ -73,51 +76,10 @@ void mainLoop() {
 			break;
 		
 		render();
+		
+		//printf("%d\n", timer->getElapsedTime());
+		//SDL_SetWindowTitle(g_mainWindow, fps_str);
 	}
-}
-
-GLchar* readShaderFile(const char* filename) {
-	FILE* f;
-	long fileSize;
-	GLchar* buf;
-	size_t nread;
-	
-	f = fopen(filename, "rb");
-	check_error(f == NULL, "Could not open file");
-	
-	fseek(f, 0, SEEK_END);
-	fileSize = ftell(f);
-	rewind(f);
-	
-	buf = (GLchar*)malloc((fileSize+1) * sizeof(GLchar));
-	nread = fread(buf, sizeof(GLchar), fileSize, f);
-	check_error(nread != fileSize, "Could not read file");
-	buf[nread] = '\0';
-	
-	fclose(f);
-	return buf;
-}
-
-void loadShaders() {
-	GLchar* vShader = readShaderFile(VERTEX_SHADER);
-	GLchar* fShader = readShaderFile(FRAGMENT_SHADER);
-	
-	GLuint vShaderId = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vShaderId, 1, (const GLchar**)(&vShader), NULL);
-	glCompileShader(vShaderId);
-	
-	GLuint fShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fShaderId, 1, (const GLchar**)(&fShader), NULL);
-	glCompileShader(fShaderId);
-	
-	GLuint programId = glCreateProgram();
-	glAttachShader(programId, vShaderId);
-	glAttachShader(programId, fShaderId);
-	glLinkProgram(programId);
-	glUseProgram(programId);
-	
-	free(vShader);
-	free(fShader);
 }
 
 int main(int argc, char* argv[]) {

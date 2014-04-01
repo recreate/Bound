@@ -13,6 +13,7 @@
 #include "util.h"
 #include "StateManager.h"
 #include "SplashScreenState.h"
+#include "GameTimer.h"
 
 #define WINDOW_TITLE "Bound"
 #define VERTEX_SHADER "./src/VertexShader.glsl"
@@ -24,8 +25,6 @@ void init();
 void cleanup();
 void render();
 void mainLoop();
-GLchar* readShaderFile(const char* filename);
-void loadShaders();
 
 extern SDL_Window* g_mainWindow;
 extern SDL_GLContext g_mainContext;

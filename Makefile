@@ -2,7 +2,7 @@ CC=g++
 EXECUTABLE=main.exe
 SRC=./src
 BIN=./bin
-PPD=-DGLEW_STATIC
+PPD=-DGLEW_STATIC -DGLM_FORCE_RADIANS
 FLAGS=-static-libgcc -static-libstdc++ -std=c++11
 LIBS=-lmingw32 -lSDL2main -lSDL2 -lopengl32
 SDL_DIR=C:/SDL2-2.0.3/x86_64-w64-mingw32
