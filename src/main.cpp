@@ -12,8 +12,13 @@ void initSDL(struct config* cfg) {
 	status = SDL_Init(SDL_INIT_VIDEO);
 	check_error(status != 0, SDL_GetError());
 	
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	/*
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	*/
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	
@@ -34,12 +39,18 @@ void initGLEW() {
 	GLenum err = glewInit();
 	glGetError(); // ignore GLEW errors?
 	check_error(err != GLEW_OK, (char*)glewGetErrorString(err));
+	glEnable(GL_DEPTH_TEST);
 	//printf("Using openGL version %s\n", glGetString(GL_VERSION));
 }
 
 void init() {
 	g_stateManager = new StateManager();
-	g_stateManager->loadNewCurrentState(new SplashScreenState("./img/image2.bmp", 8000, 3000, 2000));
+	
+	GameMenu* menu = new GameMenu();
+	MenuState* menuState = new MenuState(new Screen(loadTexture("./img/forest.jpg")), menu);
+	
+	g_stateManager->loadNewCurrentState(menuState);
+	g_stateManager->loadNewCurrentState(new SplashScreenState(new Screen(loadTexture("./img/logo.tga")), 8000, 3000, 2000));
 	
 	g_quit = false;
 }
@@ -50,11 +61,18 @@ void cleanup() {
 	SDL_Quit();
 }
 
+// TODO: REMOVE
+#include "ThreeDModel.h"
+ThreeDModel* model;
+
 // Render objects onto SDL screen
 void render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	g_stateManager->getCurrentState()->render();
+	
+	// TODO: REMOVE
+	//model->draw();
 	
 	SDL_GL_SwapWindow(g_mainWindow);
 }
@@ -65,6 +83,9 @@ void mainLoop() {
 	
 	GameTimer* timer = new GameTimer();
 	timer->start();
+	
+	// TODO: REMOVE
+	model = new ThreeDModel("./models/test/", "ship.obj");
 	
 	while(!g_quit) {
 		timer->restart();

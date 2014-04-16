@@ -1,7 +1,7 @@
 #include "SplashScreenState.h"
 
-SplashScreenState::SplashScreenState(const char* imageFile, unsigned int duration, unsigned int fadeIn, unsigned int fadeOut) {
-	m_splashScreen = new Screen(imageFile);
+SplashScreenState::SplashScreenState(Screen* slashScreen, unsigned int duration, unsigned int fadeIn, unsigned int fadeOut) {
+	m_splashScreen = slashScreen;
 	m_timer = new GameTimer();
 	
 	m_duration = duration;

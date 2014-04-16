@@ -8,7 +8,7 @@
 
 class SplashScreenState : public ApplicationState {
 public:
-	SplashScreenState(const char* imageFile, unsigned int duration, unsigned int fadeIn, unsigned int fadeOut);
+	SplashScreenState(Screen* slashScreen, unsigned int duration, unsigned int fadeIn, unsigned int fadeOut);
 	virtual ~SplashScreenState();
 	
 	virtual void handleEvent(SDL_Event e);

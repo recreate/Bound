@@ -17,6 +17,8 @@ public:
 	bool hasState();
 	
 private:
+	// TODO: Replace with std::vector?
+	// TOOD: Add data member to ApplicationState to allow for rendering previous state?
 	std::stack<ApplicationState*> m_states;
 };
 

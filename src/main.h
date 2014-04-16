@@ -8,11 +8,16 @@
 
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "glew.h"
 
+#include "globals.h"
 #include "util.h"
+#include "ThreeDModel.h"
 #include "StateManager.h"
 #include "SplashScreenState.h"
+#include "MenuState.h"
+#include "GameMenu.h"
 #include "GameTimer.h"
 
 #define WINDOW_TITLE "Bound"
@@ -25,14 +30,5 @@ void init();
 void cleanup();
 void render();
 void mainLoop();
-
-extern SDL_Window* g_mainWindow;
-extern SDL_GLContext g_mainContext;
-
-extern StateManager* g_stateManager;
-
-extern int g_windowWidth;
-extern int g_windowHeight;
-extern bool g_quit;
 
 #endif // _MAIN_H_

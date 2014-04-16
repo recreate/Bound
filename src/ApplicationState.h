@@ -14,6 +14,7 @@ public:
 	
 protected:
 	GLuint m_programId;
+	bool m_renderPrevious;
 };
 
 #endif // _APPLICATIONSTATE_H_

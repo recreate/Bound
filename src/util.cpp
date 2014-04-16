@@ -67,3 +67,40 @@ struct config* getConfiguration() {
 	
 	return cfg;
 }
+
+/*
+ * Loads an image into an SDL_Surface optimized for the game window (user's display) and flips the image vertically
+ * to match openGL texture coordinates.
+*/
+SDL_Surface* loadTexture(const char* filename) {
+	SDL_Surface* textureImage = IMG_Load(filename);
+	SDL_Surface* optimizedSurface = SDL_ConvertSurface(textureImage, SDL_GetWindowSurface(g_mainWindow)->format, 0);
+	SDL_FreeSurface(textureImage);
+	
+	// Flip image
+	int numComponents = optimizedSurface->format->BytesPerPixel;
+	unsigned char temp;
+	unsigned int width = optimizedSurface->w;
+	unsigned int height = optimizedSurface->h;
+	unsigned char* pixels = (unsigned char*)(optimizedSurface->pixels);
+	for (int i = 0; i < height/2; i++) {
+		for (int j = 0; j < width * numComponents; j++) {
+			temp = pixels[(i * width*numComponents) + j];
+			pixels[(i * width*numComponents) + j] = pixels[(height-1 - i) * (width*numComponents) + j];
+			pixels[(height-1 - i) * (width*numComponents) + j] = temp;
+		}
+	}
+	
+	return optimizedSurface;
+}
+
+/*
+void printMat4(glm::mat4 matrix) {
+	printf("%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n", 
+		matrix[0][0], matrix[1][0], matrix[2][0], matrix[3][0],
+		matrix[0][1], matrix[1][1], matrix[2][1], matrix[3][1],
+		matrix[0][2], matrix[1][2], matrix[2][2], matrix[3][2],
+		matrix[0][3], matrix[1][3], matrix[2][3], matrix[3][3]
+	);
+}
+*/

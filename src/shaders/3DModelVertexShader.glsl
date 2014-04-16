@@ -1,6 +1,7 @@
 #version 420
 
 in vec4 in_Position;
+in vec3 in_Normals;
 in vec2 in_TexCoord;
 
 out vec2 fTexCoord;

@@ -3,10 +3,21 @@
 DrawableEntity::DrawableEntity() {}
 DrawableEntity::~DrawableEntity() {}
 
+// ??? //
 void DrawableEntity::rotate() {}
-void DrawableEntity::scale(float x, float y, float z) {}
-void DrawableEntity::translate(float x, float y, float z) {}
+
+void DrawableEntity::scale(float x, float y, float z) {
+	m_model = glm::scale(m_model, glm::vec3(x,y,z));
+	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_MODEL), 1, GL_FALSE, glm::value_ptr(m_model));
+}
+
+void DrawableEntity::translate(float x, float y, float z) {
+	m_model = glm::translate(m_model, glm::vec3(x,y,z));
+	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_MODEL), 1, GL_FALSE, glm::value_ptr(m_model));
+}
+
 void DrawableEntity::setPosition(float x, float y, float z) {}
+
 void DrawableEntity::draw() {}
 
 GLchar* DrawableEntity::readShaderFile(const char* filename) {
