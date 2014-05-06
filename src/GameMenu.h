@@ -6,21 +6,28 @@
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 
-#include "Screen.h"
+#include "globals.h"
 #include "DrawableEntity.h"
+#include "Screen.h"
+#include "MenuItem.h"
 
 class GameMenu : public DrawableEntity {
 public:
-	GameMenu();
-	~GameMenu();
+	GameMenu(SDL_Surface* image, unsigned int rows, unsigned int cols);
+	virtual ~GameMenu();
 	
 	virtual void draw();
+	virtual void handleEvent(SDL_Event event);
 	
-	void appendMenuOption(Screen* option);
+	void setBackdrop(Screen* backdrop);
+	void addMenuOption(MenuItem* option, int x, int y);
 	
 protected:
-	// TODO: Remove MenuItem.cpp and replace with this?
-	std::vector<Screen*> m_menuOptions;
+	
+	unsigned int m_rows;
+	unsigned int m_cols;
+	Screen* m_backdrop;
+	MenuItem*** m_menuOptions;
 };
 
 #endif //_GAMEMENU_H_

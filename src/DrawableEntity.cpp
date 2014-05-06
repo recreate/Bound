@@ -1,22 +1,66 @@
 #include "DrawableEntity.h"
 
-DrawableEntity::DrawableEntity() {}
-DrawableEntity::~DrawableEntity() {}
+DrawableEntity::DrawableEntity() {
+	m_translations = glm::mat4();
+	m_rotations = glm::mat4();
+	m_scalings = glm::mat4();
+	
+	m_vertices = NULL;
+	m_normals = NULL;
+	m_colors = NULL;
+	m_textureCoords = NULL;
+	
+	m_vao = NULL;
+	m_textureObject = NULL;
+	
+	m_VBOVertices = NULL;
+	m_VBONormals = NULL;
+	m_VBOColors = NULL;
+	m_VBOTextureCoords = NULL;
+}
 
-// ??? //
+DrawableEntity::~DrawableEntity() {
+	printf("DrawableEntity destructor\n");
+
+	free(m_vao);
+	free(m_textureObject);
+	free(m_VBOVertices);
+	free(m_VBONormals);
+	free(m_VBOColors);
+	free(m_VBOTextureCoords);
+}
+
+// TODO ??? //
 void DrawableEntity::rotate() {}
 
 void DrawableEntity::scale(float x, float y, float z) {
+	glUseProgram(m_programId);
+	m_scalings = glm::scale(m_scalings, glm::vec3(x,y,z));
 	m_model = glm::scale(m_model, glm::vec3(x,y,z));
 	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_MODEL), 1, GL_FALSE, glm::value_ptr(m_model));
 }
 
 void DrawableEntity::translate(float x, float y, float z) {
+	glUseProgram(m_programId);
+	m_translations = glm::translate(m_translations, glm::vec3(x,y,z));
 	m_model = glm::translate(m_model, glm::vec3(x,y,z));
 	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_MODEL), 1, GL_FALSE, glm::value_ptr(m_model));
 }
 
 void DrawableEntity::setPosition(float x, float y, float z) {}
+
+glm::mat4 DrawableEntity::getTranslations() {
+	return m_translations;
+}
+
+glm::mat4 DrawableEntity::getRotations() {
+	return m_rotations;
+}
+
+glm::mat4 DrawableEntity::getScalings() {
+	return m_scalings;
+}
+
 
 void DrawableEntity::draw() {}
 

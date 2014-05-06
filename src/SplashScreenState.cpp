@@ -1,7 +1,7 @@
 #include "SplashScreenState.h"
 
-SplashScreenState::SplashScreenState(Screen* slashScreen, unsigned int duration, unsigned int fadeIn, unsigned int fadeOut) {
-	m_splashScreen = slashScreen;
+SplashScreenState::SplashScreenState(SDL_Surface* image, unsigned int duration, unsigned int fadeIn, unsigned int fadeOut) {
+	m_splashScreen = new Screen(image);
 	m_timer = new GameTimer();
 	
 	m_duration = duration;
@@ -9,6 +9,7 @@ SplashScreenState::SplashScreenState(Screen* slashScreen, unsigned int duration,
 	m_fadeOutDuration = fadeOut;
 }
 SplashScreenState::~SplashScreenState() {
+	printf("SplashScreenState destructor\n");
 	delete m_splashScreen;
 	delete m_timer;
 }
@@ -24,6 +25,7 @@ void SplashScreenState::render() {
 	unsigned int elapsedTime = m_timer->getElapsedTime();
 	if (m_timer->getElapsedTime() >= m_duration) {
 		g_stateManager->unloadCurrentState();
+		return;
 	} else if (elapsedTime <= m_fadeInDuration) {
 		float v = (float)(elapsedTime)/(m_fadeInDuration);
 		m_splashScreen->setScreenColor(glm::vec4(v, v, v, 1.0));

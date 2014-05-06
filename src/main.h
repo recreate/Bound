@@ -18,6 +18,8 @@
 #include "SplashScreenState.h"
 #include "MenuState.h"
 #include "GameMenu.h"
+#include "MenuItem.h"
+#include "MenuButton.h"
 #include "GameTimer.h"
 
 #define WINDOW_TITLE "Bound"

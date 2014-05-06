@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "util.h"
+
 class GameTimer {
 public:
 	GameTimer();

@@ -1,6 +1,8 @@
 #ifndef _SPLASHSCREENSTATE_H_
 #define _SPLASHSCREENSTATE_H_
 
+#include <SDL2/SDL.h>
+
 #include "main.h"
 #include "ApplicationState.h"
 #include "Screen.h"
@@ -8,7 +10,7 @@
 
 class SplashScreenState : public ApplicationState {
 public:
-	SplashScreenState(Screen* slashScreen, unsigned int duration, unsigned int fadeIn, unsigned int fadeOut);
+	SplashScreenState(SDL_Surface* image, unsigned int duration, unsigned int fadeIn, unsigned int fadeOut);
 	virtual ~SplashScreenState();
 	
 	virtual void handleEvent(SDL_Event e);

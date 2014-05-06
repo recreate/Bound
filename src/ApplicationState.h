@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include "glew.h"
 
+#include "util.h"
+
 class ApplicationState {
 public:
 	ApplicationState();

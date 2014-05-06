@@ -1,6 +1,8 @@
 #ifndef _MENUSTATE_H_
 #define _MENUSTATE_H_
 
+#include <SDL2/SDL.h>
+
 #include "globals.h"
 #include "StateManager.h"
 #include "Screen.h"
@@ -9,8 +11,8 @@
 
 class MenuState : public ApplicationState {
 public:
-	MenuState(Screen* bg, GameMenu* menu);
-	~MenuState();
+	MenuState(SDL_Surface* image, GameMenu* menu);
+	virtual ~MenuState();
 	
 	virtual void handleEvent(SDL_Event e);
 	virtual void render();

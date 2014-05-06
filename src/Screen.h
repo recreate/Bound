@@ -21,8 +21,12 @@ public:
 	
 	virtual void draw();
 	void setScreenColor(glm::vec4 color);
+	float getWidth();
+	float getHeight();
 	
 private:
+	float m_screenWidth;
+	float m_screenHeight;
 	glm::vec4 m_screenColor;
 };
 

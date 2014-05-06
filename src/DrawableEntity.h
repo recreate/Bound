@@ -10,6 +10,8 @@
 #include <SDL2/SDL_image.h>
 #include "glew.h"
 
+#include "util.h"
+
 #define UNIFORM_MODEL "uModelMatrix"
 #define UNIFORM_VIEW "uViewMatrix"
 #define UNIFORM_PROJ "uProjectionMatrix"
@@ -26,6 +28,10 @@ public:
 	virtual void translate(float x, float y, float z);
 	virtual void setPosition(float x, float y, float z);
 	
+	glm::mat4 getTranslations();
+	glm::mat4 getRotations();
+	glm::mat4 getScalings();
+	
 protected:
 	GLchar* readShaderFile(const char* filename); // TODO: make private?
 	void loadShaders(const char* vertexShader, const char* fragmentShader);
@@ -37,6 +43,10 @@ protected:
 	glm::mat4 m_model;
 	glm::mat4 m_view;
 	glm::mat4 m_proj;
+	
+	glm::mat4 m_translations;
+	glm::mat4 m_rotations;
+	glm::mat4 m_scalings;
 	
 	// TODO: Move into subclasses?
 	size_t m_numVertices;

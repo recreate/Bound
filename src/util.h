@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -23,5 +24,6 @@ struct config {
 void check_error(int condition, const char* msg);
 struct config* getConfiguration();
 SDL_Surface* loadTexture(const char* filename);
+void printMat4(glm::mat4 matrix);
 
 #endif // _UTIL_H_

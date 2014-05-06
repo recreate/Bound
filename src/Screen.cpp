@@ -1,12 +1,15 @@
 #include "Screen.h"
 
 Screen::Screen(SDL_Surface* image) {
-	m_programId = glCreateProgram();
-	loadShaders(SCREEN_VSHADER, SCREEN_FSHADER);
+	//m_programId = glCreateProgram();
+	//loadShaders(SCREEN_VSHADER, SCREEN_FSHADER);
 	
 	m_vao = (GLuint*)malloc(1*sizeof(GLuint));
 	glGenVertexArrays(1, m_vao);
 	glBindVertexArray(*m_vao);
+	
+	m_programId = glCreateProgram();
+	loadShaders(SCREEN_VSHADER, SCREEN_FSHADER);
 	
 	glBindAttribLocation(m_programId, ATTRIB_IN_POSITION_ID, "in_Position");
 	glBindAttribLocation(m_programId, ATTRIB_IN_TEXCOORD_ID, "in_TexCoord");
@@ -16,16 +19,16 @@ Screen::Screen(SDL_Surface* image) {
 	glUseProgram(m_programId);
 	
 	int windowHeight, windowWidth;
-	SDL_GetWindowSize(g_mainWindow, &windowHeight, &windowWidth);
+	SDL_GetWindowSize(g_mainWindow, &windowWidth, &windowHeight);
 	
-	float ww = (float)(image->w)/windowHeight;
-	float hh = (float)(image->h)/windowWidth;
+	m_screenWidth = 2.0f * (float)(image->w)/windowWidth;
+	m_screenHeight = 2.0f * (float)(image->h)/windowHeight;
 	
 	glm::vec4 box[4] = {
-		glm::vec4(-ww,  hh, -0.1f, 1.0f), // top left
-		glm::vec4(-ww, -hh, -0.1f, 1.0f), // bottom left
-		glm::vec4( ww, -hh, -0.1f, 1.0f), // bottom right
-		glm::vec4( ww,  hh, -0.1f, 1.0f)  // top right
+		glm::vec4(-m_screenWidth/2.0f,  m_screenHeight/2.0f, -0.1f, 1.0f), // top left
+		glm::vec4(-m_screenWidth/2.0f, -m_screenHeight/2.0f, -0.1f, 1.0f), // bottom left
+		glm::vec4( m_screenWidth/2.0f, -m_screenHeight/2.0f, -0.1f, 1.0f), // bottom right
+		glm::vec4( m_screenWidth/2.0f,  m_screenHeight/2.0f, -0.1f, 1.0f)  // top right
 	};
 	
 	m_numVertices = 6;
@@ -84,15 +87,19 @@ Screen::Screen(SDL_Surface* image) {
 }
 
 Screen::~Screen() {
-	free(m_vao);
-	free(m_VBOVertices);
-	free(m_VBOTextureCoords);
-	free(m_textureObject);
+	printf("Screen destructor\n");
 }
 
 void Screen::setScreenColor(glm::vec4 color) {
 	m_screenColor = color;
 	glUniform4fv(glGetUniformLocation(m_programId, "uColor"), 1, glm::value_ptr(m_screenColor));
+}
+
+float Screen::getWidth() {
+	return m_screenWidth;
+}
+float Screen::getHeight() {
+	return m_screenHeight;
 }
 
 void Screen::draw() {

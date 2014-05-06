@@ -76,7 +76,7 @@ SDL_Surface* loadTexture(const char* filename) {
 	SDL_Surface* textureImage = IMG_Load(filename);
 	SDL_Surface* optimizedSurface = SDL_ConvertSurface(textureImage, SDL_GetWindowSurface(g_mainWindow)->format, 0);
 	SDL_FreeSurface(textureImage);
-	
+
 	// Flip image
 	int numComponents = optimizedSurface->format->BytesPerPixel;
 	unsigned char temp;
@@ -94,7 +94,7 @@ SDL_Surface* loadTexture(const char* filename) {
 	return optimizedSurface;
 }
 
-/*
+/**/
 void printMat4(glm::mat4 matrix) {
 	printf("%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n", 
 		matrix[0][0], matrix[1][0], matrix[2][0], matrix[3][0],
@@ -103,4 +103,4 @@ void printMat4(glm::mat4 matrix) {
 		matrix[0][3], matrix[1][3], matrix[2][3], matrix[3][3]
 	);
 }
-*/
+/**/

@@ -6,7 +6,9 @@ GameTimer::GameTimer() {
 	m_stopTime = 0;
 }
 
-GameTimer::~GameTimer() {}
+GameTimer::~GameTimer() {
+	printf("GameTimer destructor\n");
+}
 
 void GameTimer::start() {
 	if (m_isStarted)

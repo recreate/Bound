@@ -46,11 +46,41 @@ void initGLEW() {
 void init() {
 	g_stateManager = new StateManager();
 	
-	GameMenu* menu = new GameMenu();
-	MenuState* menuState = new MenuState(new Screen(loadTexture("./img/forest.jpg")), menu);
+	// Options menu
+	GameMenu* optionsMenu = new GameMenu(loadTexture("./img/menubackground.png"), 4, 2);
 	
-	g_stateManager->loadNewCurrentState(menuState);
-	g_stateManager->loadNewCurrentState(new SplashScreenState(new Screen(loadTexture("./img/logo.tga")), 8000, 3000, 2000));
+	MenuButton* backButton = new MenuButton(loadTexture("./img/optionsmenu_back.png"));
+	
+	backButton->setTransitionState(NULL);
+	
+	optionsMenu->addMenuOption(backButton, 1, 3);
+	
+	MenuState* optionsMenuState = new MenuState(loadTexture("./img/back.jpg"), optionsMenu);
+	
+	// Main menu
+	GameMenu* startMenu = new GameMenu(loadTexture("./img/menubackground.png"), 3, 1);
+	
+	MenuButton* startButton = new MenuButton(loadTexture("./img/menubutton_start.png"));
+	MenuButton* optionsButton = new MenuButton(loadTexture("./img/menubutton_options.png"));
+	MenuButton* exitButton = new MenuButton(loadTexture("./img/menubutton_exit.png"));
+	
+	startButton->setTransitionState(NULL);
+	optionsButton->setTransitionState(optionsMenuState);
+	exitButton->setTransitionState(NULL);
+	
+	startMenu->addMenuOption(startButton, 0, 0);
+	startMenu->addMenuOption(optionsButton, 0, 1);
+	startMenu->addMenuOption(exitButton, 0, 2);
+	
+	MenuState* startMenuState = new MenuState(loadTexture("./img/back.jpg"), startMenu);
+	
+	SplashScreenState* splashScreen = new SplashScreenState(loadTexture("./img/logo.tga"), 8000, 3000, 2000);
+	
+	g_stateManager->registerState(startMenuState);
+	g_stateManager->registerState(optionsMenuState);
+	g_stateManager->registerState(splashScreen);
+	g_stateManager->loadNewCurrentState(startMenuState);
+	g_stateManager->loadNewCurrentState(splashScreen);
 	
 	g_quit = false;
 }
@@ -59,20 +89,15 @@ void cleanup() {
 	SDL_DestroyWindow(g_mainWindow);
 	SDL_GL_DeleteContext(g_mainContext);
 	SDL_Quit();
+	
+	delete g_stateManager;
 }
-
-// TODO: REMOVE
-#include "ThreeDModel.h"
-ThreeDModel* model;
 
 // Render objects onto SDL screen
 void render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	g_stateManager->getCurrentState()->render();
-	
-	// TODO: REMOVE
-	//model->draw();
 	
 	SDL_GL_SwapWindow(g_mainWindow);
 }
@@ -83,9 +108,6 @@ void mainLoop() {
 	
 	GameTimer* timer = new GameTimer();
 	timer->start();
-	
-	// TODO: REMOVE
-	model = new ThreeDModel("./models/test/", "ship.obj");
 	
 	while(!g_quit) {
 		timer->restart();
@@ -101,6 +123,8 @@ void mainLoop() {
 		//printf("%d\n", timer->getElapsedTime());
 		//SDL_SetWindowTitle(g_mainWindow, fps_str);
 	}
+	
+	delete timer;
 }
 
 int main(int argc, char* argv[]) {
