@@ -13,12 +13,11 @@
 
 class MenuButton : public MenuLabel {
 public:
-	MenuButton(SDL_Surface* image);
+	MenuButton(SDL_Surface* image, SDL_Surface* text, ApplicationState* state);
 	virtual ~MenuButton();
 	
 	virtual void highlight(bool set);
 	virtual void action();
-	void setTransitionState(ApplicationState* state);
 	
 protected:
 	ApplicationState* m_state;

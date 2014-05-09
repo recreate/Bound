@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "globals.h"
 
@@ -28,6 +29,7 @@ struct config {
 void check_error(int condition, const char* msg);
 struct config* getConfiguration();
 SDL_Surface* loadTexture(const char* filename);
+SDL_Surface* generateText(TTF_Font *font, const char* text, SDL_Color color);
 void printMat4(glm::mat4 matrix);
 
 #endif // _UTIL_H_

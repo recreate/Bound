@@ -3,6 +3,7 @@
 
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "globals.h"
 #include "StateManager.h"
@@ -12,7 +13,7 @@
 
 class MenuLabel : public MenuItem {
 public:
-	MenuLabel(SDL_Surface* image);
+	MenuLabel(SDL_Surface* image, SDL_Surface* text);
 	virtual ~MenuLabel();
 	
 	virtual void draw();
@@ -28,6 +29,7 @@ public:
 	
 protected:
 	Screen* m_buttonImage;
+	Screen* m_buttonText;
 };
 
 #endif // _MENULABEL_H_

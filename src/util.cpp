@@ -73,6 +73,26 @@ struct config* getConfiguration() {
 	return cfg;
 }
 
+/* 
+ * Flips image.
+ * UV coordinates place the origin at the lower left.
+ * ST coordinates place the origin at the top left.
+*/
+void UV2ST(SDL_Surface *surf) {
+	int numComponents = surf->format->BytesPerPixel;
+	unsigned char temp;
+	unsigned int width = surf->w;
+	unsigned int height = surf->h;
+	unsigned char* pixels = (unsigned char*)(surf->pixels);
+	for (int i = 0; i < height/2; i++) {
+		for (int j = 0; j < width * numComponents; j++) {
+			temp = pixels[(i * width*numComponents) + j];
+			pixels[(i * width*numComponents) + j] = pixels[(height-1 - i) * (width*numComponents) + j];
+			pixels[(height-1 - i) * (width*numComponents) + j] = temp;
+		}
+	}
+}
+
 /*
  * Loads an image into an SDL_Surface optimized for the game window (user's display) and flips the image vertically
  * to match openGL texture coordinates.
@@ -88,20 +108,18 @@ SDL_Surface* loadTexture(const char* filename) {
 	SDL_FreeSurface(rgbaSurface);
 
 	// Flip image
-	int numComponents = optimizedSurface->format->BytesPerPixel;
-	unsigned char temp;
-	unsigned int width = optimizedSurface->w;
-	unsigned int height = optimizedSurface->h;
-	unsigned char* pixels = (unsigned char*)(optimizedSurface->pixels);
-	for (int i = 0; i < height/2; i++) {
-		for (int j = 0; j < width * numComponents; j++) {
-			temp = pixels[(i * width*numComponents) + j];
-			pixels[(i * width*numComponents) + j] = pixels[(height-1 - i) * (width*numComponents) + j];
-			pixels[(height-1 - i) * (width*numComponents) + j] = temp;
-		}
-	}
+	UV2ST(optimizedSurface);
 	
 	return optimizedSurface;
+}
+
+SDL_Surface* generateText(TTF_Font *font, const char* text, SDL_Color color) {
+	SDL_Surface *renderedText = TTF_RenderText_Blended(font, text, color);
+	
+	// Flip image
+	UV2ST(renderedText);
+	
+	return renderedText;
 }
 
 /**/

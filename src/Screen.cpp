@@ -85,6 +85,8 @@ Screen::Screen(SDL_Surface* image) {
 	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_VIEW), 1, GL_FALSE, glm::value_ptr(m_view));
 	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_PROJ), 1, GL_FALSE, glm::value_ptr(m_proj));
 	
+	SDL_FreeSurface(image);
+	
 	// TODO: encapsulate this inside of DrawableEntity somehow?
 	scale(g_horizontalPlusScale, g_horizontalPlusScale, 1.0f);
 }

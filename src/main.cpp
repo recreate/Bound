@@ -32,6 +32,8 @@ void initSDL(struct config* cfg) {
 	
 	g_mainContext = SDL_GL_CreateContext(g_mainWindow);
 	check_error(g_mainContext == NULL, SDL_GetError());
+	
+	TTF_Init();
 }
 
 void initGLEW() {
@@ -48,16 +50,17 @@ void initGLEW() {
 void init() {
 	g_stateManager = new StateManager();
 	
+	TTF_Font* font = TTF_OpenFont("./fonts/station.ttf", 46);
+	SDL_Color fontColor = {0, 0, 0};
+	
 	// Options menu
 	GameMenu* optionsMenu = new GameMenu(loadTexture("./img/menubackground.png"), 4, 2);
 	
-	MenuButton* controlsButton = new MenuButton(loadTexture("./img/optionsmenu_controls.png"));
-	MenuButton* gamplayButton = new MenuButton(loadTexture("./img/optionsmenu_gameplay.png"));
-	MenuButton* audioButton = new MenuButton(loadTexture("./img/optionsmenu_audio.png"));
-	MenuButton* graphicsButton = new MenuButton(loadTexture("./img/optionsmenu_graphics.png"));
-	MenuButton* backButton = new MenuButton(loadTexture("./img/optionsmenu_back.png"));
-	
-	backButton->setTransitionState(NULL);
+	MenuButton* controlsButton = new MenuButton(loadTexture("./img/button_style_A.png"), generateText(font, "CONTROLS", fontColor), NULL);
+	MenuButton* gamplayButton = new MenuButton(loadTexture("./img/button_style_A.png"), generateText(font, "GAMEPLAY", fontColor), NULL);
+	MenuButton* audioButton = new MenuButton(loadTexture("./img/button_style_A.png"), generateText(font, "AUDIO", fontColor), NULL);
+	MenuButton* graphicsButton = new MenuButton(loadTexture("./img/button_style_A.png"), generateText(font, "GRAPHICS", fontColor), NULL);
+	MenuButton* backButton = new MenuButton(loadTexture("./img/button_style_A.png"), generateText(font, "BACK", fontColor), NULL);
 	
 	optionsMenu->addMenuOption(controlsButton, 0, 1);
 	optionsMenu->addMenuOption(gamplayButton, 1, 1);
@@ -70,13 +73,9 @@ void init() {
 	// Main menu
 	GameMenu* startMenu = new GameMenu(loadTexture("./img/menubackground.png"), 4, 1);
 	
-	MenuButton* startButton = new MenuButton(loadTexture("./img/menubutton_start.png"));
-	MenuButton* optionsButton = new MenuButton(loadTexture("./img/menubutton_options.png"));
-	MenuButton* exitButton = new MenuButton(loadTexture("./img/menubutton_exit.png"));
-	
-	startButton->setTransitionState(NULL);
-	optionsButton->setTransitionState(optionsMenuState);
-	exitButton->setTransitionState(NULL);
+	MenuButton* startButton = new MenuButton(loadTexture("./img/button_style_A.png"), generateText(font, "START", fontColor), NULL);
+	MenuButton* optionsButton = new MenuButton(loadTexture("./img/button_style_A.png"), generateText(font, "OPTIONS", fontColor), optionsMenuState);
+	MenuButton* exitButton = new MenuButton(loadTexture("./img/button_style_A.png"), generateText(font, "EXIT", fontColor), NULL);
 	
 	startMenu->addMenuOption(startButton, 0, 1);
 	startMenu->addMenuOption(optionsButton, 0, 2);
@@ -92,6 +91,7 @@ void init() {
 	g_stateManager->loadNewCurrentState(startMenuState);
 	g_stateManager->loadNewCurrentState(splashScreen);
 	
+	TTF_CloseFont(font);
 	g_quit = false;
 }
 

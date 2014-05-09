@@ -1,17 +1,13 @@
 #include "MenuButton.h"
 
-MenuButton::MenuButton(SDL_Surface* image) 
-	: MenuLabel::MenuLabel(image)
+MenuButton::MenuButton(SDL_Surface* image, SDL_Surface* text, ApplicationState* state) 
+	: MenuLabel::MenuLabel(image, text)
 {
-	m_state = NULL;
+	m_state = state;
 }
 
 MenuButton::~MenuButton() {
 	printf("MenuButton destructor\n");
-}
-
-void MenuButton::setTransitionState(ApplicationState* state) {
-	m_state = state;
 }
 
 void MenuButton::highlight(bool set) {
