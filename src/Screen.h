@@ -20,6 +20,7 @@ public:
 	virtual ~Screen();
 	
 	virtual void draw();
+	
 	void setScreenColor(glm::vec4 color);
 	float getWidth();
 	float getHeight();

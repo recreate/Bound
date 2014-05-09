@@ -1,5 +1,7 @@
 #include "util.h"
 
+float g_horizontalPlusScale;
+
 void check_error(int condition, const char* msg) {
 	if (condition) {
 		fprintf(stderr, "Error: %s\n", msg);
@@ -65,6 +67,9 @@ struct config* getConfiguration() {
 	cfg->fullscreen = fullscreen;
 	cfg->border = border;
 	
+	g_horizontalPlusScale = cfg->height < ASPECT_RATIO_HEIGHT ? (float)(cfg->height)/ASPECT_RATIO_HEIGHT : 1.0f;
+	printf("%f\n", g_horizontalPlusScale);
+	
 	return cfg;
 }
 
@@ -73,9 +78,14 @@ struct config* getConfiguration() {
  * to match openGL texture coordinates.
 */
 SDL_Surface* loadTexture(const char* filename) {
+	int windowHeight, windowWidth;
+	SDL_GetWindowSize(g_mainWindow, &windowWidth, &windowHeight);
+	SDL_Surface* rgbaSurface = SDL_CreateRGBSurface(0, windowWidth, windowHeight, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	
 	SDL_Surface* textureImage = IMG_Load(filename);
-	SDL_Surface* optimizedSurface = SDL_ConvertSurface(textureImage, SDL_GetWindowSurface(g_mainWindow)->format, 0);
+	SDL_Surface* optimizedSurface = SDL_ConvertSurface(textureImage, rgbaSurface->format, 0);
 	SDL_FreeSurface(textureImage);
+	SDL_FreeSurface(rgbaSurface);
 
 	// Flip image
 	int numComponents = optimizedSurface->format->BytesPerPixel;

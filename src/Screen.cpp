@@ -84,6 +84,9 @@ Screen::Screen(SDL_Surface* image) {
 	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_MODEL), 1, GL_FALSE, glm::value_ptr(m_model));
 	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_VIEW), 1, GL_FALSE, glm::value_ptr(m_view));
 	glUniformMatrix4fv(glGetUniformLocation(m_programId, UNIFORM_PROJ), 1, GL_FALSE, glm::value_ptr(m_proj));
+	
+	// TODO: encapsulate this inside of DrawableEntity somehow?
+	scale(g_horizontalPlusScale, g_horizontalPlusScale, 1.0f);
 }
 
 Screen::~Screen() {
@@ -91,6 +94,7 @@ Screen::~Screen() {
 }
 
 void Screen::setScreenColor(glm::vec4 color) {
+	glUseProgram(m_programId);
 	m_screenColor = color;
 	glUniform4fv(glGetUniformLocation(m_programId, "uColor"), 1, glm::value_ptr(m_screenColor));
 }

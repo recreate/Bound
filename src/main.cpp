@@ -40,6 +40,8 @@ void initGLEW() {
 	glGetError(); // ignore GLEW errors?
 	check_error(err != GLEW_OK, (char*)glewGetErrorString(err));
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//printf("Using openGL version %s\n", glGetString(GL_VERSION));
 }
 
@@ -49,16 +51,24 @@ void init() {
 	// Options menu
 	GameMenu* optionsMenu = new GameMenu(loadTexture("./img/menubackground.png"), 4, 2);
 	
+	MenuButton* controlsButton = new MenuButton(loadTexture("./img/optionsmenu_controls.png"));
+	MenuButton* gamplayButton = new MenuButton(loadTexture("./img/optionsmenu_gameplay.png"));
+	MenuButton* audioButton = new MenuButton(loadTexture("./img/optionsmenu_audio.png"));
+	MenuButton* graphicsButton = new MenuButton(loadTexture("./img/optionsmenu_graphics.png"));
 	MenuButton* backButton = new MenuButton(loadTexture("./img/optionsmenu_back.png"));
 	
 	backButton->setTransitionState(NULL);
 	
+	optionsMenu->addMenuOption(controlsButton, 0, 1);
+	optionsMenu->addMenuOption(gamplayButton, 1, 1);
+	optionsMenu->addMenuOption(audioButton, 0, 2);
+	optionsMenu->addMenuOption(graphicsButton, 1, 2);
 	optionsMenu->addMenuOption(backButton, 1, 3);
 	
 	MenuState* optionsMenuState = new MenuState(loadTexture("./img/back.jpg"), optionsMenu);
 	
 	// Main menu
-	GameMenu* startMenu = new GameMenu(loadTexture("./img/menubackground.png"), 3, 1);
+	GameMenu* startMenu = new GameMenu(loadTexture("./img/menubackground.png"), 4, 1);
 	
 	MenuButton* startButton = new MenuButton(loadTexture("./img/menubutton_start.png"));
 	MenuButton* optionsButton = new MenuButton(loadTexture("./img/menubutton_options.png"));
@@ -68,9 +78,9 @@ void init() {
 	optionsButton->setTransitionState(optionsMenuState);
 	exitButton->setTransitionState(NULL);
 	
-	startMenu->addMenuOption(startButton, 0, 0);
-	startMenu->addMenuOption(optionsButton, 0, 1);
-	startMenu->addMenuOption(exitButton, 0, 2);
+	startMenu->addMenuOption(startButton, 0, 1);
+	startMenu->addMenuOption(optionsButton, 0, 2);
+	startMenu->addMenuOption(exitButton, 0, 3);
 	
 	MenuState* startMenuState = new MenuState(loadTexture("./img/back.jpg"), startMenu);
 	

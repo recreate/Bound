@@ -10,6 +10,7 @@ extern SDL_GLContext g_mainContext;
 
 extern StateManager* g_stateManager;
 
+extern float g_horizontalPlusScale;
 extern int g_windowWidth;
 extern int g_windowHeight;
 extern bool g_quit;

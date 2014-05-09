@@ -33,7 +33,6 @@ public:
 	glm::mat4 getScalings();
 	
 protected:
-	GLchar* readShaderFile(const char* filename); // TODO: make private?
 	void loadShaders(const char* vertexShader, const char* fragmentShader);
 	
 	GLuint m_vertexShaderId;
@@ -62,6 +61,9 @@ protected:
 	GLuint* m_VBONormals;
 	GLuint* m_VBOColors;
 	GLuint* m_VBOTextureCoords;
+
+private:
+	GLchar* readShaderFile(const char* filename);
 };
 
 #endif // _DRAWABLEENTITY_H_

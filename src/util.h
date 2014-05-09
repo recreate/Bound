@@ -10,6 +10,10 @@
 
 #include "globals.h"
 
+// Aspect ratio 16:9
+#define ASPECT_RATIO_WIDTH 1920
+#define ASPECT_RATIO_HEIGHT 1080
+
 #define CONFIGURATION_FILE "settings.cfg"
 #define DEFAULT_FULLSCREEN 1
 #define DEFAULT_BORDER 0

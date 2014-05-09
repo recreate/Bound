@@ -48,8 +48,9 @@ void GameMenu::addMenuOption(MenuItem* option, int x, int y) {
 	}
 }
 
+// TODO: Fix event handling with respect to scaled menu buttons
 void GameMenu::handleEvent(SDL_Event event) {
-	if (event.type == SDL_MOUSEBUTTONDOWN) {
+	if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEMOTION) {
 		int windowHeight, windowWidth;
 		SDL_GetWindowSize(g_mainWindow, &windowWidth, &windowHeight);
 		
@@ -62,13 +63,17 @@ void GameMenu::handleEvent(SDL_Event event) {
 				if (m_menuOptions[i][j] == NULL)
 					continue;
 				
-				float posX = m_menuOptions[i][j]->getPosition().x;
-				float posY = m_menuOptions[i][j]->getPosition().y;
-				float width = m_menuOptions[i][j]->getWidth();
-				float height = m_menuOptions[i][j]->getHeight();
+				float posX = m_menuOptions[i][j]->getPosition().x * g_horizontalPlusScale;
+				float posY = m_menuOptions[i][j]->getPosition().y * g_horizontalPlusScale;
+				float width = m_menuOptions[i][j]->getWidth() * g_horizontalPlusScale;
+				float height = m_menuOptions[i][j]->getHeight() * g_horizontalPlusScale;
 				
+				m_menuOptions[i][j]->highlight(false);
 				if ((screenX >= posX - width/2.0f && screenX <= posX + width/2.0f) && (screenY >= posY - height/2.0f && screenY <= posY + height/2.0f)) {
-					m_menuOptions[i][j]->action();
+					if (event.type == SDL_MOUSEMOTION)
+						m_menuOptions[i][j]->highlight(true);
+					if (event.type == SDL_MOUSEBUTTONDOWN)
+						m_menuOptions[i][j]->action();
 					return;
 				}
 			}

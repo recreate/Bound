@@ -14,4 +14,6 @@ float MenuItem::getHeight() {}
 
 void MenuItem::draw() {}
 
+void MenuItem::highlight(bool set) {}
+
 void MenuItem::action() {}

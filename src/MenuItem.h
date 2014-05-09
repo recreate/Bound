@@ -11,6 +11,7 @@ public:
 	virtual ~MenuItem();
 	
 	virtual void draw();
+	virtual void highlight(bool set);
 	virtual void action();
 	
 	virtual glm::vec2 getPosition();
